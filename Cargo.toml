@@ -1,0 +1,29 @@
+[package]
+name = "hydrus-ptr-client"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+tracing = "0.1.31"
+thiserror = "1.0.30"
+serde_json = "1.0.79"
+flate2 = "1.0.22"
+reqwest = "0.11.9"
+
+[dependencies.serde]
+version = "1.0.136"
+features = ["derive"]
+
+[dev-dependencies]
+tracing-subscriber = "0.3.9"
+dotenv = "0.15.0"
+lazy_static = "1.4.0"
+
+[dev-dependencies.tokio]
+version = "1.17.0"
+features = ["rt-multi-thread", "macros"]
+
+[features]
+rustls = ["reqwest/rustls"]
