@@ -15,10 +15,23 @@ pub trait HydrusSerializable: DeserializeOwned {
     fn type_id() -> u64;
 }
 
-#[derive(Clone, Debug)]
-pub struct SerializableId<T: HydrusSerializable>(u64, PhantomData<T>);
+pub trait ConstNumberTrait {
+    fn value() -> u64;
+}
 
-impl<'de, T: HydrusSerializable> Deserialize<'de> for SerializableId<T> {
+impl<T> ConstNumberTrait for T
+where
+    T: HydrusSerializable,
+{
+    fn value() -> u64 {
+        T::type_id()
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct SerializableId<T: ConstNumberTrait>(u64, PhantomData<T>);
+
+impl<'de, T: ConstNumberTrait> Deserialize<'de> for SerializableId<T> {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where
         D: Deserializer<'de>,
@@ -29,11 +42,11 @@ impl<'de, T: HydrusSerializable> Deserialize<'de> for SerializableId<T> {
 
 struct SerIdVisitor<T>(PhantomData<T>);
 
-impl<'de, T: HydrusSerializable> Visitor<'de> for SerIdVisitor<T> {
+impl<'de, T: ConstNumberTrait> Visitor<'de> for SerIdVisitor<T> {
     type Value = SerializableId<T>;
 
     fn expecting(&self, formatter: &mut Formatter) -> std::fmt::Result {
-        write!(formatter, "an unsigned integer equal to {}", T::type_id())
+        write!(formatter, "an unsigned integer equal to {}", T::value())
     }
 
     fn visit_u8<E>(self, v: u8) -> Result<Self::Value, E>
@@ -61,9 +74,9 @@ impl<'de, T: HydrusSerializable> Visitor<'de> for SerIdVisitor<T> {
     where
         E: Error,
     {
-        let expected_value = T::type_id();
+        let expected_value = T::value();
         if v != expected_value {
-            Err(E::custom(format!("type not equal to {}", expected_value)))
+            Err(E::custom(format!("value not equal to {}", expected_value)))
         } else {
             Ok(SerializableId(expected_value, PhantomData))
         }
