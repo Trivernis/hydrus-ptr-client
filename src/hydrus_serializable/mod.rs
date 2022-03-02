@@ -7,6 +7,7 @@ use std::fmt::Formatter;
 use std::marker::PhantomData;
 
 pub mod dictionary;
+pub mod tag_filter;
 pub mod wrapper;
 
 pub trait HydrusSerializable: DeserializeOwned {

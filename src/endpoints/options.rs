@@ -1,4 +1,5 @@
 use crate::hydrus_serializable::dictionary::HydrusDictionary;
+use crate::hydrus_serializable::tag_filter::HydrusTagFilter;
 use crate::hydrus_serializable::wrapper::HydrusSerWrapper;
 use crate::Result;
 use crate::{Endpoint, FromJson, GetEndpoint};
@@ -34,7 +35,10 @@ impl FromJson for OptionsResponse {
         let server_message = service_options.take_by_str::<String>("server_message")?;
         let update_period = service_options.take_by_str::<u64>("update_period")?;
         let nullification_period = service_options.take_by_str::<u64>("nullification_period")?;
-        let tag_filter = service_options.take_by_str::<Value>(&"tag_filter")?;
+        let tag_filter = service_options
+            .take_by_str::<HydrusSerWrapper<HydrusTagFilter>>(&"tag_filter")?
+            .inner
+            .0;
 
         Ok(Self {
             server_message,
