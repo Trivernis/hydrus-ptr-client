@@ -1,7 +1,7 @@
 use crate::hydrus_serializable::dictionary::HydrusDictionary;
 use crate::hydrus_serializable::wrapper::HydrusSerWrapper;
 use crate::Result;
-use crate::{fix, Endpoint, FromJson, GetEndpoint};
+use crate::{Endpoint, FromJson, GetEndpoint};
 use serde_json::Value;
 
 pub struct Options;
@@ -18,26 +18,23 @@ impl GetEndpoint for Options {
 
 #[derive(Clone, Debug)]
 pub struct OptionsResponse {
-    server_message: String,
-    update_period: u64,
-    nullification_period: u64,
-    tag_filter: Value,
+    pub server_message: String,
+    pub update_period: u64,
+    pub nullification_period: u64,
+    pub tag_filter: Value,
 }
 
 impl FromJson for OptionsResponse {
     fn from_json(value: serde_json::Value) -> Result<Self> {
-        let response = serde_json::from_value::<HydrusSerWrapper<HydrusDictionary>>(value)?;
-        let options_value = fix!(response.inner.get_one(&"service_options".into()));
-        let options_value =
-            serde_json::from_value::<HydrusSerWrapper<HydrusDictionary>>(options_value.clone())?
-                .inner;
+        let mut response = HydrusDictionary::from_json(value)?;
+        let mut service_options = response
+            .take_by_str::<HydrusSerWrapper<HydrusDictionary>>("service_options")?
+            .inner;
 
-        let server_message =
-            fix!(fix!(options_value.get_one(&"server_message".into())).as_str()).to_string();
-        let update_period = fix!(fix!(options_value.get_one(&"update_period".into())).as_u64());
-        let nullification_period =
-            fix!(fix!(options_value.get_one(&"nullification_period".into())).as_u64());
-        let tag_filter = fix!(options_value.get_one(&"tag_filter".into())).clone();
+        let server_message = service_options.take_by_str::<String>("server_message")?;
+        let update_period = service_options.take_by_str::<u64>("update_period")?;
+        let nullification_period = service_options.take_by_str::<u64>("nullification_period")?;
+        let tag_filter = service_options.take_by_str::<Value>(&"tag_filter")?;
 
         Ok(Self {
             server_message,

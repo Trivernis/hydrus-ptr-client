@@ -21,4 +21,7 @@ pub enum Error {
 
     #[error("malformed response")]
     Malformed,
+
+    #[error("Missing property {0}")]
+    MissingProperty(String),
 }

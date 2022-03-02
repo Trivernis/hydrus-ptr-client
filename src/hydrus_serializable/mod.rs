@@ -1,18 +1,30 @@
-use crate::hydrus_serializable::dictionary::HydrusDictionary;
-use serde::de::{DeserializeOwned, EnumAccess, Error, MapAccess, SeqAccess, Visitor};
-use serde::{Deserialize, Deserializer, Serialize};
+use crate::hydrus_serializable::wrapper::HydrusSerWrapper;
+use crate::FromJson;
+use serde::de::{DeserializeOwned, Error, Visitor};
+use serde::{Deserialize, Deserializer};
 use serde_json::Value;
-use std::cmp::Ordering;
 use std::fmt::Formatter;
-use std::hash::{Hash, Hasher};
 use std::marker::PhantomData;
-use std::ops::{Deref, DerefMut};
 
 pub mod dictionary;
 pub mod wrapper;
 
 pub trait HydrusSerializable: DeserializeOwned {
     fn type_id() -> u64;
+}
+
+impl<T> FromJson for T
+where
+    T: HydrusSerializable,
+{
+    fn from_json(value: Value) -> crate::Result<Self>
+    where
+        Self: Sized,
+    {
+        let wrapper = serde_json::from_value::<HydrusSerWrapper<T>>(value)?;
+
+        Ok(wrapper.inner)
+    }
 }
 
 pub trait ConstNumberTrait {
