@@ -1,8 +1,10 @@
+mod metadata;
 mod options;
 
 use crate::Result;
 use std::fmt::Debug;
 
+pub use metadata::*;
 pub use options::*;
 
 pub trait Endpoint {

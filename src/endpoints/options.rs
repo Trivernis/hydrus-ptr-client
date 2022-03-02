@@ -5,15 +5,15 @@ use crate::Result;
 use crate::{Endpoint, FromJson, GetEndpoint};
 use serde_json::Value;
 
-pub struct Options;
+pub struct OptionsEndpoint;
 
-impl Endpoint for Options {
+impl Endpoint for OptionsEndpoint {
     fn path() -> &'static str {
         "options"
     }
 }
 
-impl GetEndpoint for Options {
+impl GetEndpoint for OptionsEndpoint {
     type Response = OptionsResponse;
 }
 

@@ -27,9 +27,17 @@ impl Client {
         }
     }
 
+    /// Returns the options of the PTR
     #[tracing::instrument(skip(self), level = "debug")]
     pub async fn options(&self) -> Result<OptionsResponse> {
-        self.get::<Options, ()>(&()).await
+        self.get::<OptionsEndpoint, ()>(&()).await
+    }
+
+    /// Returns information about all available updates since the given ID
+    /// and when the next check for updates should be made
+    #[tracing::instrument(skip(self), level = "debug")]
+    pub async fn metadata(&self, since: u64) -> Result<MetadataResponse> {
+        self.get::<MetadataEndpoint, _>(&[("since", since)]).await
     }
 
     /// Performs a get request to the given Get Endpoint
