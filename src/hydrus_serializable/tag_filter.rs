@@ -1,3 +1,4 @@
+use crate::constants::HYDRUS_TYPE_TAG_FILTER;
 use crate::hydrus_serializable::HydrusSerializable;
 use serde::Deserialize;
 use serde_json::Value;
@@ -7,6 +8,6 @@ pub struct HydrusTagFilter(pub Value);
 
 impl HydrusSerializable for HydrusTagFilter {
     fn type_id() -> u64 {
-        44
+        HYDRUS_TYPE_TAG_FILTER
     }
 }

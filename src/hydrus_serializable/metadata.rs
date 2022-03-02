@@ -1,3 +1,4 @@
+use crate::constants::HYDRUS_TYPE_METADATA;
 use crate::hydrus_serializable::HydrusSerializable;
 use serde::Deserialize;
 
@@ -17,6 +18,6 @@ pub struct MetadataEntry {
 
 impl HydrusSerializable for HydrusMetadata {
     fn type_id() -> u64 {
-        37
+        HYDRUS_TYPE_METADATA
     }
 }

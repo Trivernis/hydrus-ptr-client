@@ -40,6 +40,14 @@ impl Client {
         self.get::<MetadataEndpoint, _>(&[("since", since)]).await
     }
 
+    /// Returns the parsed update file identified by the given hash.
+    /// The hash can be retrieved by fetching the metadata with [Client::metadata]
+    #[tracing::instrument(skip(self), level = "debug")]
+    pub async fn update<S: AsRef<str> + Debug>(&self, update_hash: S) -> Result<UpdateResponse> {
+        self.get::<UpdateEndpoint, _>(&[("update_hash", update_hash.as_ref())])
+            .await
+    }
+
     /// Performs a get request to the given Get Endpoint
     #[tracing::instrument(skip(self), level = "trace")]
     async fn get<E: GetEndpoint, Q: Serialize + Debug>(&self, query: &Q) -> Result<E::Response> {

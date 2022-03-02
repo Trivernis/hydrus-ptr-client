@@ -1,11 +1,13 @@
 mod metadata;
 mod options;
+mod update;
 
 use crate::Result;
 use std::fmt::Debug;
 
 pub use metadata::*;
 pub use options::*;
+pub use update::*;
 
 pub trait Endpoint {
     fn path() -> &'static str;
