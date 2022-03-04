@@ -1,3 +1,4 @@
+use crate::constants::{DEFAULT_PTR_ADDRESS, DEFAULT_READONLY_ACCESS_KEY};
 use crate::Client;
 use crate::{Error, Result};
 use std::time::Duration;
@@ -12,8 +13,8 @@ impl Default for ClientBuilder {
     fn default() -> Self {
         Self {
             reqwest_builder: reqwest::ClientBuilder::new(),
-            endpoint: String::from("https://ptr.hydrus.network:45871"),
-            access_key: None,
+            endpoint: String::from(DEFAULT_PTR_ADDRESS),
+            access_key: Some(String::from(DEFAULT_READONLY_ACCESS_KEY)),
         }
     }
 }

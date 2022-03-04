@@ -1,3 +1,5 @@
+use futures_util::StreamExt;
+
 mod common;
 
 #[tokio::test]
@@ -23,4 +25,26 @@ async fn test_update() {
 
     client.get_update(DEFINITIONS_UPDATE_HASH).await.unwrap();
     client.get_update(CONTENT_UPDATE_HASH).await.unwrap();
+}
+
+#[tokio::test]
+async fn test_update_stream() {
+    let client = common::get_client(); // 3230
+    let mut update_stream = client.stream_updates(0).await.unwrap();
+    let mut retry_count = 3;
+
+    while let Some(update) = update_stream.next().await {
+        if let Err(e) = update {
+            if retry_count > 0 {
+                retry_count -= 1;
+                update_stream.retry_latest();
+            } else {
+                assert!(
+                    false,
+                    "fetching next update failed within retry limit: {}",
+                    e
+                )
+            }
+        }
+    }
 }

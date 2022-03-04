@@ -7,7 +7,7 @@ use std::io::Write;
 
 impl Client {
     /// Performs a get request to the given Get Endpoint
-    #[tracing::instrument(skip(self), level = "trace")]
+    #[tracing::instrument(skip(self), level = "debug")]
     pub(crate) async fn get<E: GetEndpoint, Q: Serialize + Debug>(
         &self,
         query: &Q,

@@ -15,11 +15,15 @@ fn setup() {
 
 pub fn get_client() -> Client {
     setup();
+    let ptr_url_env = env::var("PTR_URL").ok();
+    let ptr_key_env = env::var("PTR_ACCESS_KEY").ok();
 
-    Client::builder()
-        .endpoint(env::var("PTR_URL").unwrap())
-        .access_key(env::var("PTR_ACCESS_KEY").unwrap())
-        .accept_invalid_certs(true)
-        .build()
-        .unwrap()
+    let mut builder = Client::builder().accept_invalid_certs(true);
+    if let Some(url) = ptr_url_env {
+        builder = builder.endpoint(url);
+    }
+    if let Some(key) = ptr_key_env {
+        builder = builder.access_key(key);
+    }
+    builder.build().unwrap()
 }

@@ -1,10 +1,13 @@
 mod client_core;
+mod update_stream;
 
 pub use crate::endpoints::*;
 use crate::{ClientBuilder, Result};
 pub use client_core::*;
 use std::fmt::Debug;
+pub use update_stream::*;
 
+#[derive(Clone)]
 pub struct Client {
     pub(crate) client: reqwest::Client,
     pub(crate) base_url: String,

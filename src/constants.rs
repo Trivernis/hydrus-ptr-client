@@ -1,5 +1,9 @@
 #![allow(unused)]
 
+pub const DEFAULT_PTR_ADDRESS: &str = "https://ptr.hydrus.network:45871";
+pub const DEFAULT_READONLY_ACCESS_KEY: &str =
+    "4a285629721ca442541ef2c15ea17d1f7f7578b0c3f4f5f2a05f8f0ab297786f";
+
 // serializable
 pub const HYDRUS_TYPE_BASE: u64 = 0;
 pub const HYDRUS_TYPE_BASE_NAMED: u64 = 1;
