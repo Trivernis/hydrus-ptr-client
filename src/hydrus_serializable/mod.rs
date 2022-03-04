@@ -6,6 +6,7 @@ use serde_json::Value;
 use std::fmt::Formatter;
 use std::marker::PhantomData;
 
+pub mod content_update;
 pub mod definitions_update;
 pub mod dictionary;
 pub mod metadata;

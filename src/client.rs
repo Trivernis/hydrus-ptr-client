@@ -29,21 +29,24 @@ impl Client {
 
     /// Returns the options of the PTR
     #[tracing::instrument(skip(self), level = "debug")]
-    pub async fn options(&self) -> Result<OptionsResponse> {
+    pub async fn get_options(&self) -> Result<OptionsResponse> {
         self.get::<OptionsEndpoint, ()>(&()).await
     }
 
     /// Returns information about all available updates since the given ID
     /// and when the next check for updates should be made
     #[tracing::instrument(skip(self), level = "debug")]
-    pub async fn metadata(&self, since: u64) -> Result<MetadataResponse> {
+    pub async fn get_metadata(&self, since: u64) -> Result<MetadataResponse> {
         self.get::<MetadataEndpoint, _>(&[("since", since)]).await
     }
 
     /// Returns the parsed update file identified by the given hash.
     /// The hash can be retrieved by fetching the metadata with [Client::metadata]
     #[tracing::instrument(skip(self), level = "debug")]
-    pub async fn update<S: AsRef<str> + Debug>(&self, update_hash: S) -> Result<UpdateResponse> {
+    pub async fn get_update<S: AsRef<str> + Debug>(
+        &self,
+        update_hash: S,
+    ) -> Result<UpdateResponse> {
         self.get::<UpdateEndpoint, _>(&[("update_hash", update_hash.as_ref())])
             .await
     }
