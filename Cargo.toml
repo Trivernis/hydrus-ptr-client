@@ -4,7 +4,7 @@ description = "A http client for the hydrus ptr"
 authors = ["trivernis"]
 version = "0.1.0"
 edition = "2021"
-license = "apache-2.0"
+license = "Apache-2.0"
 readme = "README.md"
 repository = "https://github.com/Trivernis/hydrus-ptr-client"
 
