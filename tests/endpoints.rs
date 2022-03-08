@@ -11,7 +11,8 @@ async fn test_options() {
 #[tokio::test]
 async fn test_metadata() {
     let client = common::get_client();
-    client.get_metadata(0).await.unwrap();
+    let metadata = client.get_metadata(0).await.unwrap();
+    assert!(metadata.update_hashes().len() > 0);
 }
 
 const DEFINITIONS_UPDATE_HASH: &str =
@@ -32,8 +33,10 @@ async fn test_update_stream() {
     let client = common::get_client(); // 3230
     let mut update_stream = client.stream_updates(0).await.unwrap();
     let mut retry_count = 3;
+    let mut test_count = 25;
 
     while let Some(update) = update_stream.next().await {
+        test_count -= 1;
         if let Err(e) = update {
             if retry_count > 0 {
                 retry_count -= 1;
@@ -44,6 +47,11 @@ async fn test_update_stream() {
                     "fetching next update failed within retry limit: {}",
                     e
                 )
+            }
+        } else {
+            retry_count = 3;
+            if test_count <= 0 {
+                break;
             }
         }
     }

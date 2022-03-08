@@ -32,3 +32,13 @@ impl FromJson for MetadataResponse {
         Ok(MetadataResponse(metadata))
     }
 }
+
+impl MetadataResponse {
+    pub fn update_hashes(&self) -> Vec<&String> {
+        self.0
+            .entries
+            .iter()
+            .flat_map(|e| e.update_hashes.iter().collect::<Vec<&String>>())
+            .collect()
+    }
+}

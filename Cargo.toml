@@ -1,7 +1,12 @@
 [package]
 name = "hydrus-ptr-client"
+description = "A http client for the hydrus ptr"
+authors = ["trivernis"]
 version = "0.1.0"
 edition = "2021"
+license = "apache-2.0"
+readme = "README.md"
+repository = "https://github.com/Trivernis/hydrus-ptr-client"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

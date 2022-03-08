@@ -1,3 +1,4 @@
+#![allow(unused)]
 use crate::constants::HYDRUS_TYPE_DICTIONARY;
 use crate::hydrus_serializable::HydrusSerializable;
 use crate::{Error, Result};
